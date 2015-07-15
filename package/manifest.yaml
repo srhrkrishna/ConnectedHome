@@ -1,0 +1,11 @@
+
+Format: 1.0
+Type: Application
+FullName: io.murano.apps.cognizant.ConnectedHome
+Name: Connected Home
+Description: |
+ Connected Home.
+Author: 'Cognizant Technology Solutions Pvt. Ltd.'
+tags: [HTTP, Server, WebServer, HTML, IoT, Connected, Home]
+Classes:
+ io.murano.apps.cognizant.ConnectedHome: ConnectedHome.yaml

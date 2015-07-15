@@ -1,0 +1,17 @@
+
+FormatVersion: 2.0.0
+Version: 1.0.0
+Name: Connected Home
+
+Body: |
+  return connectedHomeDeploy().stdout
+
+Scripts:
+  connectedHomeDeploy:
+    Type: Application
+    Version: 1.0.0
+    EntryPoint: chpoc.sh
+    Files: []
+    Options:
+      captureStdout: true
+      captureStderr: true

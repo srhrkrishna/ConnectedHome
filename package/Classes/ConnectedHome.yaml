@@ -1,0 +1,46 @@
+
+Namespaces:
+  =: io.murano.apps.cognizant
+  std: io.murano
+  res: io.murano.resources
+  sys: io.murano.system
+
+
+Name: ConnectedHome
+
+Extends: std:Application
+
+Properties:
+  name:
+    Contract: $.string().notNull()
+
+  instance:
+    Contract: $.class(res:Instance).notNull()
+
+Methods:
+  initialize:
+    Body:
+      - $._environment: $.find(std:Environment).require()
+
+  deploy:
+    Body:
+      - If: not $.getAttr(deployed, false)
+        Then:
+          - $._environment.reporter.report($this, 'Creating VM for Connected Home.')
+          - $securityGroupIngress:
+            - ToPort: 80
+              FromPort: 80
+              IpProtocol: tcp
+              External: true
+            - ToPort: 443
+              FromPort: 443
+              IpProtocol: tcp
+              External: true
+          - $._environment.securityGroupManager.addGroupIngress($securityGroupIngress)
+          - $.instance.deploy()
+          - $resources: new(sys:Resources)
+          - $template: $resources.yaml('DeployConnectedHome.template')
+          - $._environment.reporter.report($this, 'Instance is created. Deploying Connected Home')
+          - $.instance.agent.call($template, $resources, 3600)
+          - $._environment.reporter.report($this, 'Connected Home is installed.')
+          - $.setAttr(deployed, true)
